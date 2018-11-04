@@ -1,3 +1,10 @@
 **/.Ds_Store
 .vscode/
 **/__pycache__
+emotions/
+nn.tar
+images/
+*.wav
+sentiment-analysis/
+word
+MyProject.json
