@@ -8,3 +8,6 @@ images/
 sentiment-analysis/
 word
 MyProject.json
+emotion/emo_nn.model
+sentiments/model.hdf5
+

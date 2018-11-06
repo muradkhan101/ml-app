@@ -26,8 +26,9 @@ sp = spotipy.Spotify(auth=token)
 def getPlaylist():
     data = request.get_json()
     audioB64 = data['audio']
-    wavFile = audioB64[-24:] + '.wav'
-    flacFile = audioB64[-24:] + 'flac'
+    fileStart = audioB64[-24:].replace('/', '')
+    wavFile = fileStart + '.wav'
+    flacFile = fileStart + '.flac'
     convertB64ToMonoAndSave(audioB64, wavFile)
     convertWavToFlac(wavFile, flacFile)
     sentiment, emotionLabel = getSoundInfo(flacFile, wavFile)
@@ -35,7 +36,7 @@ def getPlaylist():
     os.remove(flacFile)
     os.remove(wavFile)
 
-    res = {'emotion': emotion, 'sentiment': sentiment, 'gender': gender, 'playlists': playlistMap[emotion][sentiment].preset}
+    res = {'emotion': emotion, 'sentiment': sentiment, 'gender': gender, 'playlists': playlistMap[emotion][sentiment]['preset']}
     return jsonify(res)
 
 @app.route('/playlist/more', methods=['GET'])
