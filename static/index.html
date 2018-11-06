@@ -8,11 +8,52 @@
         <meta name="author" content="Murad Khan">
         <meta name="description" content="Find a Spotify playlist that suits the current mood your own">
         <meta name="keywords" content="music,spotify,audio">
+        <link href="css/main.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Cabin|Nanum+Gothic:400,700" rel="preload" as="style">
     </head>
 
     <body>
-        <button id="record">Start Recording</button>
-        <audio id="audio" controls></audio>
+        <main>
+            <section id="landing" class="center">
+                <div class="sub-section">
+                    <h1>Sound Remedy</h1>
+                    <h4>Discover a set of playlists specifically tailored for your current mood determined by a super-smart AI (okay, it's only kinda smart) </h4>
+                </div>
+                <div class="sub-section">
+                    <button id="to-permissions" class="primary">Get Started</button>
+                </div>
+            </section>
+            <section id="permissions" class="center">
+                <div class="sub-section animate">
+                    <h4>To start off, we're gonna need a recording of your voice to figure out your mood. To do that,
+                        we'll need permission to access your microphone so hit 'Allow' when the browser asks you. We promise
+                        not to do shady stuff with your voice recordings :)
+                    </h4>
+                </div>
+                <div class="sub-section hidden permissions-success">
+                    <p>
+                        Awesome! We're ready to get started! Are you ready to be mildly entertained?
+                    </p>
+                    <button id="to-recorder" class="alt">Find Playlist</button>
+                </div>
+                <div class="sub-section hidden permissions-fail">
+                    <p>
+                        Awww, something went wrong :( Did you perhaps say no to the permissions request?
+                    </p>
+                    <button id="retry-permissions" class="alt">Try Again</button>
+                </div>
+            </section>
+            <section id="recorder" class="center">
+                <div class="sub-section">
+                    <h4>Alright it's the moment of truth! Hit the button below to start recording and get a custom tailored playlist!</h4>
+                </div>
+                <div class="sub-section">
+                    <button id="record" class="primary">Start Recording</button>
+                </div>
+            </section>
+        </main>
+        <!-- <button id="record">Start Recording</button>
+        <audio id="audio" controls></audio> -->
     </body>
     <script src="js/WebAudioRecorder.min.js"></script>
     <script src="js/main.js"></script>

@@ -1,13 +1,36 @@
 // Set up audio context
 (function() {
-    document.addEventListener('DOMContentLoaded', function() {
+    const main = document.querySelector('main');
+    document.getElementById('landing').scrollIntoView();
+    const audioContext = new AudioContext;
+    const audioInLevel = audioContext.createGain();
+    let audioIn = void 0;
+    function getRecordingPermissions() {
+        // Ask for mic permissions
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
+            audioIn = audioContext.createMediaStreamSource(stream);
+            audioIn.connect(audioInLevel);
+            let permissions = document.querySelector('.permissions-success');
+            permissions.classList.remove('hidden');
+            permissions.classList.add('visible');
+
+            let failed = document.querySelector('.permissions-fail');
+            if (failed.classList.contains('visible')) {
+                permissions.classList.add('hidden');
+                permissions.classList.remove('visible');
+            }
+        }, (err) => {
+            let permissions = document.querySelector('.permissions-fail');
+            permissions.classList.remove('hidden');
+            permissions.classList.add('visible');
+            document.querySelector('retry-permissions').addEventListener('click', getRecordingPermissions);
+        })
+    }
+    function initRecording() {
         let isRecording = false;
     
-        const audioContext = new AudioContext;
-        const audioInLevel = audioContext.createGain();
         audioInLevel.gain.value = 1;
         const mixer = audioContext.createGain();
-        let audioIn = void 0;
         audioInLevel.connect(mixer);
         mixer.connect(audioContext.destination);
         
@@ -16,7 +39,6 @@
             workerDir: 'js/'
         });
         audioRecorder.onComplete = function(recorder, blob) {
-            console.log(blob);
             let f = new FileReader();
             f.onload = function() {
                 const b64 = f.result;
@@ -28,6 +50,7 @@
                     }
                 }).then(res => {
                     console.log(res);
+                    window.scrollX(-100);
                 })
             }
             // let url = URL.createObjectURL(blob);
@@ -50,11 +73,14 @@
             }
             isRecording = !isRecording;
         })
+    }
 
-        // Ask for mic permissions
-        navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(stream => {
-            audioIn = audioContext.createMediaStreamSource(stream);
-            audioIn.connect(audioInLevel);
-        })
+    document.getElementById('to-permissions').addEventListener('click', function(e) {
+        document.getElementById('permissions').scrollIntoView({behavior: 'smooth'})
+        window.setTimeout(() => getRecordingPermissions(), 100);
+    })
+    document.getElementById('to-recorder').addEventListener('click', function(e) {
+        document.getElementById('recorder').scrollIntoView({behavior: 'smooth'});
+        initRecording();
     })
 })()
