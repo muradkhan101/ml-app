@@ -24,31 +24,40 @@
                 </div>
             </section>
             <section id="permissions" class="center">
-                <div class="sub-section animate">
+                <div class="sub-section">
                     <h4>To start off, we're gonna need a recording of your voice to figure out your mood. To do that,
                         we'll need permission to access your microphone so hit 'Allow' when the browser asks you. We promise
                         not to do shady stuff with your voice recordings :)
                     </h4>
                 </div>
-                <div class="sub-section hidden permissions-success">
+                <div class="sub-section transition-fade-in transition-fade-in-hidden permissions-success">
                     <p>
                         Awesome! We're ready to get started! Are you ready to be mildly entertained?
                     </p>
                     <button id="to-recorder" class="alt">Find Playlist</button>
                 </div>
-                <div class="sub-section hidden permissions-fail">
+                <div class="sub-section transition-fade-in transition-fade-in-hidden hidden permissions-fail">
                     <p>
-                        Awww, something went wrong :( Did you perhaps say no to the permissions request?
+                        Awww, did you deny access to your microphone? Unfortunately this app can't work without using the microphone so if
+                        you want to use it, press Cmd + Shift + R (or Ctrl + Shift + R for you Windows users) to refresh the page and choose
+                        allow this time.
                     </p>
-                    <button id="retry-permissions" class="alt">Try Again</button>
                 </div>
             </section>
-            <section id="recorder" class="center">
-                <div class="sub-section">
-                    <h4>Alright it's the moment of truth! Hit the button below to start recording and get a custom tailored playlist!</h4>
+            <section id="recorder">
+                <div class="accordion">
+                    <div class="sub-section">
+                        <h4>Alright it's the moment of truth! Hit the button below to start recording and get a custom tailored playlist!</h4>
+                    </div>
+                    <div class="sub-section">
+                        <button id="record" class="primary">Start Recording</button>
+                    </div>
                 </div>
-                <div class="sub-section">
-                    <button id="record" class="primary">Start Recording</button>
+                <div class="sub-section hidden" id="playlist-holder">
+                    <h4>The magical hamsters that run the server think these playlists could be good for your state of mind right now</h4>
+                    <div id="playlists">
+
+                    </div>
                 </div>
             </section>
         </main>

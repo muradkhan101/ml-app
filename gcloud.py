@@ -17,4 +17,7 @@ def speechToText(flacFile):
         print('-' * 20)
         print('First alternative of result {}'.format(i))
         print('Transcript: {}'.format(alternative.transcript))
-    return response.results[0].alternatives[0].transcript
+    try:
+        return response.results[0].alternatives[0].transcript
+    except:
+        return ''

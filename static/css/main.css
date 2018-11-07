@@ -112,37 +112,52 @@ section.center {
 }
 .sub-section {
     width: calc(100% - 32px);
+    margin-bottom: 24px;
 }
 @media(min-width: 900px) {
     .sub-section {
-        width: 600px;
+        width: 640px;
     }
 }
-.animate {
-    animation: all 200ms ease-in-out;
+
+#recorder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    text-align: center;
+    overflow-y: auto;
 }
-@keyframes fadeFromOutOfView {
-    0% {
-        display: none;
-        opacity: 0;
-        left: 2000px;
-    }
-    1% {
-        display: block;
-        opacity: 0;
-        left: 2000px;
-    }
-    100% {
-        display: block;
-        opacity: 1;
-        left: 0;
-    }
+.album {
+    padding: 4px;
+    background-color: #4d4d4d;
+    max-width: 300px;
+    margin-bottom: 16px;
 }
-.visible {
-    animation: fadeFromOutOfView 250ms ease-in-out;
+#playlists {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
+
+.accordion {
+    transition: height 250ms ease-in-out;
+    overflow: hidden;
+    height: 100%;
+}
+.accordion-closed {
+    height: 0;
+}
+
+.transition-fade-in {
+    transition: opacity 250ms ease-out;
+    opacity: 1;
+}
+.transition-fade-in-hidden {
+    opacity: 0;
+}
+
 .hidden {
     display: none;
-    opacity: 0;
-    left: 2000px;
 }

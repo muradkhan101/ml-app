@@ -29,9 +29,9 @@ def classifySentiment(input):
 
     print('[INFO] Prediction', prediction)
 
-    if (prediction < 0.45):
+    if (prediction < 0.5):
         return 'negative'
-    elif (prediction > 0.7):
-        return 'positive'
     else:
-        return 'neutral'
+        return 'positive'
+    # else:
+    #     return 'neutral'
