@@ -27,8 +27,8 @@ def getPlaylist():
     data = request.get_json()
     audioB64 = data['audio']
     fileStart = audioB64[-24:].replace('/', '')
-    wavFile = fileStart + '.wav'
-    flacFile = fileStart + '.flac'
+    wavFile = 'sounds/' + fileStart + '.wav'
+    flacFile = 'sounds/' + fileStart + '.flac'
     convertB64ToMonoAndSave(audioB64, wavFile)
     convertWavToFlac(wavFile, flacFile)
     sentiment, emotionLabel = getSoundInfo(flacFile, wavFile)

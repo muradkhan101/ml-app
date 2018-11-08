@@ -1,6 +1,7 @@
 // Set up audio context
 (function() {
-    const audioContext = new AudioContext;
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioContext = new AudioContext();
     const audioInLevel = audioContext.createGain();
     let audioIn = void 0;
     const allPlaylists = [];
@@ -25,7 +26,7 @@
         audioInLevel.gain.value = 1;
         const mixer = audioContext.createGain();
         audioInLevel.connect(mixer);
-        mixer.connect(audioContext.destination);
+        // mixer.connect(audioContext.destination);
         
         // Set up audioRecorder
         const audioRecorder = new WebAudioRecorder(mixer, {
@@ -35,7 +36,7 @@
             let f = new FileReader();
             f.onload = function() {
                 const b64 = f.result;
-                fetch('http://127.0.0.1:5000/playlist', {
+                fetch('https://ml.tycc.io/playlist', {
                     method: 'POST',
                     body: JSON.stringify({audio: b64.slice(22)}),
                     headers: {
