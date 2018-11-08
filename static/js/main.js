@@ -79,6 +79,8 @@ class Paginator {
                     }
                 }).then(res => res.json()).then(res => {
                     response = res;
+                    let playlistContainer = document.getElementById('playlist-holder');
+                    playlistContainer.scrollIntoView();
                     return res;
                 }).then(appendPlaylists);
             }
@@ -116,7 +118,7 @@ class Paginator {
         paginator.next({
             emotion: response.emotion,
             sentiment: response.sentiment
-        }).then(appendPlaylists);
+        }).then(res => res.json()).then(appendPlaylists);
     })
     function appendPlaylists(res) {
         let playlists = document.getElementById('playlists');
@@ -128,7 +130,6 @@ class Paginator {
         window.requestAnimationFrame(() => {
             let playlistContainer = document.getElementById('playlist-holder');
             playlistContainer.classList.remove('hidden');
-            playlistContainer.scrollIntoView();
             window.requestAnimationFrame(() => {
                 function addAlbum(albums, current) {
                     if (current < albums.length) {
