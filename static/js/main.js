@@ -1,11 +1,46 @@
+
+class Paginator {
+    constructor(endpoint, limit = 5, offset = 0) {
+        this.endpoint = endpoint;
+        this.limit = limit;
+        this.offset = offset;
+    }
+    setOffset(offset) {
+        this.offset = offset;
+    }
+    setLimit(limit) {
+        this.limit = limit;
+    }
+    next(options) {
+        const params = {
+            ...options,
+            offset: this.offset
+        };
+        const queryParams = Object.entries(params).map(([key, value]) => `${key}=${value}`).join('&');
+        const url = `${this.endpoint}?${queryParams}`;
+        return fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            this.setOffset(this.offset + this.limit);
+            return res;
+        })
+    }
+}
+
 // Set up audio context
 (function() {
     var AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioContext = new AudioContext();
     const audioInLevel = audioContext.createGain();
     let audioIn = void 0;
+
     const allPlaylists = [];
     let currentPage = 'landing';
+    const paginator = new Paginator('https://ml.tycc.io/playlist/more');
+    let response;
 
     function getRecordingPermissions() {
         // Ask for mic permissions
@@ -43,32 +78,9 @@
                         'Content-Type': 'application/json'
                     }
                 }).then(res => res.json()).then(res => {
-                    let playlists = document.getElementById('playlists');
-                    allPlaylists.push(...res.playlists);
-                    let playlistElements = res.playlists.map(makePlaylistLink);
-                    document.querySelector('#recorder .accordion').classList.add('accordion-closed');
-                    document.getElementById('playlist-holder').classList.toggle('hidden');
-                    window.requestAnimationFrame(() => {
-                        let playlistContainer = document.getElementById('playlist-holder');
-                        playlistContainer.classList.remove('hidden');
-                        scrollTo(playlistContainer);
-                        window.requestAnimationFrame(() => {
-                            function addAlbum(albums, current) {
-                                if (current < albums.length) {
-                                    let item = albums[current];
-                                    item.classList.add('transition-fade-in');
-                                    item.classList.add('transition-fade-in-hidden');
-                                    playlists.appendChild(item);
-                                    window.setTimeout(() => {
-                                        item.classList.remove('transition-fade-in-hidden');
-                                        addAlbum(albums, current + 1);
-                                    }, 150)
-                                }
-                            }
-                            addAlbum(playlistElements, 0)
-                        })
-                    })
-                })
+                    response = res;
+                    return res;
+                }).then(appendPlaylists);
             }
             // let url = URL.createObjectURL(blob);
             f.readAsDataURL(blob);
@@ -100,6 +112,40 @@
         currentPage = 'recorder';
         initRecording();
     })
+    document.getElementById('load-more').addEventListener('click', function(e) {
+        paginator.next({
+            emotion: response.emotion,
+            sentiment: response.sentiment
+        }).then(appendPlaylists);
+    })
+    function appendPlaylists(res) {
+        let playlists = document.getElementById('playlists');
+        const idArray = allPlaylists.map(p => p.id);
+        allPlaylists.push(...res.playlists.filter(p => !idArray.includes(p)));
+        let playlistElements = res.playlists.map(makePlaylistLink);
+        document.querySelector('#recorder .accordion').classList.add('accordion-closed');
+        document.getElementById('playlist-holder').classList.toggle('hidden');
+        window.requestAnimationFrame(() => {
+            let playlistContainer = document.getElementById('playlist-holder');
+            playlistContainer.classList.remove('hidden');
+            playlistContainer.scrollIntoView();
+            window.requestAnimationFrame(() => {
+                function addAlbum(albums, current) {
+                    if (current < albums.length) {
+                        let item = albums[current];
+                        item.classList.add('transition-fade-in');
+                        item.classList.add('transition-fade-in-hidden');
+                        playlists.appendChild(item);
+                        window.setTimeout(() => {
+                            item.classList.remove('transition-fade-in-hidden');
+                            addAlbum(albums, current + 1);
+                        }, 150)
+                    }
+                }
+                addAlbum(playlistElements, 0)
+            })
+        })
+    }
 
     function makePlaylistLink(playlist) {
         let link = document.createElement('a');
@@ -116,9 +162,6 @@
         return link;
     }
 
-    function scrollTo(el) {
-        el.scrollIntoView();
-    }
     window.onresize = function () {
         document.getElementById(currentPage).scrollIntoView({ behavior: 'instant' });
     }
