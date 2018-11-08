@@ -50,7 +50,7 @@
                     window.requestAnimationFrame(() => {
                         let playlistContainer = document.getElementById('playlist-holder');
                         playlistContainer.classList.remove('hidden');
-                        playlistContainer.scrollIntoView({behavior: 'smooth'});
+                        scrollTo(playlistContainer);
                         window.requestAnimationFrame(() => {
                             function addAlbum(albums, current) {
                                 if (current < albums.length) {
@@ -93,12 +93,10 @@
 
     document.getElementById('to-permissions').addEventListener('click', function(e) {
         currentPage = 'permissions';
-        document.getElementById(currentPage).scrollIntoView({behavior: 'smooth'})
         window.setTimeout(() => getRecordingPermissions(), 100);
     })
     document.getElementById('to-recorder').addEventListener('click', function(e) {
         currentPage = 'recorder';
-        document.getElementById(currentPage).scrollIntoView({behavior: 'smooth'});
         initRecording();
     })
 
@@ -117,12 +115,15 @@
         return link;
     }
 
-
+    function scrollTo(el) {
+        el.scrollIntoView();
+    }
     window.onresize = function () {
         document.getElementById(currentPage).scrollIntoView({ behavior: 'instant' });
     }
 })()
 
 window.onbeforeunload = function () {
+    window.location.hash = '';
     document.getElementById('landing').scrollIntoView();
 }

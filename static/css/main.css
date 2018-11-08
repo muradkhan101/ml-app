@@ -55,7 +55,7 @@ body {
     background-color: #1E2120;
     height: 100%;
 }
-button {
+button, a {
     padding: 12px 32px;
     border: 0;
     border-radius: 500px;
@@ -69,10 +69,12 @@ button {
 
     cursor: pointer;
 }
-button.primary {
+a.primary, button.primary {
+    text-decoration: none;
     background-color: #E88827;
 }
-button.alt {
+a.alt, button.alt {
+    text-decoration: none;
     background-color: #15C984;
 }
 
@@ -97,6 +99,7 @@ main {
     display: flex;
     overflow: hidden;
     height: 100%;
+    scroll-behavior: smooth;
 }
 section {
     min-height: 100%;
