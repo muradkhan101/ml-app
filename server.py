@@ -6,6 +6,7 @@ from wav_to_flac import convertWavToFlac
 from nn import getSoundInfo
 
 from playlist import playlistMap
+from spotify import SpotipyHelper
 
 import json
 import os
@@ -13,13 +14,7 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-import spotipy
-import spotipy.oauth2 as auth
-CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID', '')
-CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET', '')
-auth = auth.SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
-token = auth.get_access_token()
-sp = spotipy.Spotify(auth=token)
+sp = SpotipyHelper()
 
 @app.route('/playlist', methods=['POST'])
 @cross_origin()
@@ -49,6 +44,9 @@ def searchPlaylist():
         query = playlistMap[emotion][sentiment]['search']
     except:
         return Response("{'error': 'The value supplied for either 'sentiment' or 'emotion' isn't part of the allowed values'", status=400, mimetype='application/json')
-    results = sp.search(query, type='playlist', limit=5, offset=offset)
+    try:
+        results = sp.get().search(query, type='playlist', limit=5, offset=offset)
+    except:
+        sp.renew().search(query, type='playlist', limit=5, offset=offset)
     res = {'playlists': results['playlists']['items']}
     return jsonify(res)
