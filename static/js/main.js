@@ -39,6 +39,7 @@ class Paginator {
 
     const allPlaylists = [];
     let currentPage = 'landing';
+    window.location.hash = 'landing';
     const paginator = new Paginator('https://ml.tycc.io/playlist/more');
     let response;
 
@@ -69,21 +70,21 @@ class Paginator {
         });
         audioRecorder.onComplete = function(recorder, blob) {
             let f = new FileReader();
-            f.onload = function() {
-                const b64 = f.result;
-                fetch('https://ml.tycc.io/playlist', {
-                    method: 'POST',
-                    body: JSON.stringify({audio: b64.slice(22)}),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(res => res.json()).then(res => {
-                    response = res;
-                    let playlistContainer = document.getElementById('playlist-holder');
-                    playlistContainer.scrollIntoView();
-                    return res;
-                }).then(appendPlaylists);
-            }
+            // f.onload = function() {
+            //     const b64 = f.result;
+            //     fetch('https://ml.tycc.io/playlist', {
+            //         method: 'POST',
+            //         body: JSON.stringify({audio: b64.slice(22)}),
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         }
+            //     }).then(res => res.json()).then(res => {
+            //         response = res;
+            //         let playlistContainer = document.getElementById('playlist-holder');
+            //         playlistContainer.scrollIntoView();
+            //         return res;
+            //     }).then(appendPlaylists);
+            // }
             // let url = URL.createObjectURL(blob);
             f.readAsDataURL(blob);
             // document.getElementById('audio').src = url;
@@ -108,11 +109,22 @@ class Paginator {
 
     document.getElementById('to-permissions').addEventListener('click', function(e) {
         currentPage = 'permissions';
+        window.history.pushState(null, null, '#permissions');
         window.setTimeout(() => getRecordingPermissions(), 100);
     })
     document.getElementById('to-recorder').addEventListener('click', function(e) {
         currentPage = 'recorder';
+        window.history.pushState(null, null, '#recorder');
         initRecording();
+
+        navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(stream => {
+            let analyzer = new AudioAnalyzer(stream);
+            analyzer.connectNewSource().then(res => {
+                let canvas = document.getElementById('audioVis');
+                let barVisualization = new RoundBarVisualizer(canvas, analyzer);
+                barVisualization.draw();
+            })
+        })
     })
     document.getElementById('load-more').addEventListener('click', function(e) {
         paginator.next({
@@ -168,7 +180,6 @@ class Paginator {
     }
 })()
 
-window.onbeforeunload = function () {
-    window.location.hash = '';
-    document.getElementById('landing').scrollIntoView();
-}
+window.addEventListener('popstate', function(e) {
+    document.querySelector(window.location.hash).scrollIntoView({ behavior: 'smooth' });
+})

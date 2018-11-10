@@ -131,6 +131,13 @@ section.center {
     text-align: center;
     overflow-y: auto;
 }
+#record {
+    padding: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    text-align: center;
+}
 .album {
     padding: 4px;
     background-color: #4d4d4d;
@@ -163,4 +170,14 @@ section.center {
 
 .hidden {
     display: none;
+}
+
+.canvas-wrapper {
+    position: relative;
+}
+.canvas-wrapper #record {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

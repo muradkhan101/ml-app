@@ -50,7 +50,10 @@
                         <h4>Alright it's the moment of truth! Hit the button below to start recording and get a custom tailored playlist!</h4>
                     </div>
                     <div class="sub-section">
-                        <button id="record" class="primary">Start Recording</button>
+                        <div class="canvas-wrapper">
+                            <canvas id="audioVis" height="400" width="400"></canvas>
+                            <button id="record" class="primary">Start Recording</button>
+                        </div>
                     </div>
                 </div>
                 <div class="sub-section hidden" id="playlist-holder">
@@ -62,7 +65,8 @@
                 </div>
             </section>
         </main>
+        <script async src="js/WebAudioRecorder.min.js"></script>
+        <script async src="js/audio-vis.js"></script>
+        <script src="js/main.js"></script>
     </body>
-    <script src="js/WebAudioRecorder.min.js"></script>
-    <script src="js/main.js"></script>
 </html>
