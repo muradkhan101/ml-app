@@ -1,0 +1,152 @@
+.animation-container {
+  all: unset;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 0.4;
+}
+
+.item {
+  width: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.item:nth-child(1) {
+  --delay: calc((4s / 20) * -1);
+}
+.item:nth-child(2) {
+  --delay: calc((4s / 20) * -2);
+}
+.item:nth-child(3) {
+  --delay: calc((4s / 20) * -3);
+}
+.item:nth-child(4) {
+  --delay: calc((4s / 20) * -4);
+}
+.item:nth-child(5) {
+  --delay: calc((4s / 20) * -5);
+}
+.item:nth-child(6) {
+  --delay: calc((4s / 20) * -6);
+}
+.item:nth-child(7) {
+  --delay: calc((4s / 20) * -7);
+}
+.item:nth-child(8) {
+  --delay: calc((4s / 20) * -8);
+}
+.item:nth-child(9) {
+  --delay: calc((4s / 20) * -9);
+}
+.item:nth-child(10) {
+  --delay: calc((4s / 20) * -10);
+}
+.item:nth-child(11) {
+  --delay: calc((4s / 20) * -11);
+}
+.item:nth-child(12) {
+  --delay: calc((4s / 20) * -12);
+}
+.item::before, .item::after {
+  content: '';
+  width: 20px;
+  height: 160px;
+  border-radius: 20px;
+  animation: var(--color-animation) ease-in-out 4s var(--delay) infinite, translate ease-in-out 4s var(--delay) infinite;
+}
+.item::before {
+  background-color: #ff9400;
+  --color-animation: first;
+  --translate: calc(340px - 100%);
+}
+.item::after {
+  background-color: #3000fd;
+  --color-animation: second;
+  --translate: calc(-340px + 100%);
+}
+
+@keyframes translate {
+  25%,
+  75% {
+    height: 125px;
+  }
+  50% {
+    transform: translateY(var(--translate));
+    height: 20px;
+  }
+}
+@keyframes first {
+  6.6666666667%,
+  100% {
+    background-color: #ff9400;
+  }
+  13.3333333333%,
+  93.3333333333% {
+    background-color: #ff8200;
+  }
+  20%,
+  86.6666666667% {
+    background-color: #ff5600;
+  }
+  26.6666666667%,
+  80% {
+    background-color: #ff2000;
+  }
+  33.3333333333%,
+  73.3333333333% {
+    background-color: #e6001f;
+  }
+  40%,
+  66.6666666667% {
+    background-color: #99007d;
+  }
+  46.6666666667%,
+  60% {
+    background-color: #5c00ca;
+  }
+  53.3333333333% {
+    background-color: #3000fd;
+  }
+}
+@keyframes second {
+  6.6666666667%,
+  100% {
+    background-color: #3000fd;
+  }
+  13.3333333333%,
+  93.3333333333% {
+    background-color: #5c00ca;
+  }
+  20%,
+  86.6666666667% {
+    background-color: #99007d;
+  }
+  26.6666666667%,
+  80% {
+    background-color: #e6001f;
+  }
+  33.3333333333%,
+  73.3333333333% {
+    background-color: #ff2000;
+  }
+  40%,
+  66.6666666667% {
+    background-color: #ff5600;
+  }
+  46.6666666667%,
+  60% {
+    background-color: #ff8200;
+  }
+  53.3333333333% {
+    background-color: #ff9400;
+  }
+}
